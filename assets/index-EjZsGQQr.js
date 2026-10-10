@@ -1,3 +1,691 @@
+function M(e, t) {
+    for (var n = 0; n < t.length; n++) {
+        const r = t[n];
+        if (typeof r != "string" && !Array.isArray(r)) {
+            for (const o in r)
+                if (o !== "default" && !(o in e)) {
+                    const s = Object.getOwnPropertyDescriptor(r, o);
+                    s && Object.defineProperty(e, o, s.get ? s : {
+                        enumerable: !0,
+                        get: () => r[o]
+                    })
+                }
+        }
+    }
+    return Object.freeze(Object.defineProperty(e, Symbol.toStringTag, {
+        value: "Module"
+    }))
+}
+var pe = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {};
+function L(e) {
+    return e && e.__esModule && Object.prototype.hasOwnProperty.call(e, "default") ? e.default : e
+}
+function ye(e) {
+    if (e.__esModule)
+        return e;
+    var t = e.default;
+    if (typeof t == "function") {
+        var n = function r() {
+            return this instanceof r ? Reflect.construct(t, arguments, this.constructor) : t.apply(this, arguments)
+        };
+        n.prototype = t.prototype
+    } else
+        n = {};
+    return Object.defineProperty(n, "__esModule", {
+        value: !0
+    }),
+    Object.keys(e).forEach(function(r) {
+        var o = Object.getOwnPropertyDescriptor(e, r);
+        Object.defineProperty(n, r, o.get ? o : {
+            enumerable: !0,
+            get: function() {
+                return e[r]
+            }
+        })
+    }),
+    n
+}
+var E = {
+    exports: {}
+}
+  , _ = {}
+  , C = {
+    exports: {}
+}
+  , u = {};
+/**
+ * @license React
+ * react.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+var y = Symbol.for("react.element")
+  , F = Symbol.for("react.portal")
+  , J = Symbol.for("react.fragment")
+  , U = Symbol.for("react.strict_mode")
+  , W = Symbol.for("react.profiler")
+  , Y = Symbol.for("react.provider")
+  , V = Symbol.for("react.context")
+  , z = Symbol.for("react.forward_ref")
+  , H = Symbol.for("react.suspense")
+  , G = Symbol.for("react.memo")
+  , K = Symbol.for("react.lazy")
+  , S = Symbol.iterator;
+function Q(e) {
+    return e === null || typeof e != "object" ? null : (e = S && e[S] || e["@@iterator"],
+    typeof e == "function" ? e : null)
+}
+var T = {
+    isMounted: function() {
+        return !1
+    },
+    enqueueForceUpdate: function() {},
+    enqueueReplaceState: function() {},
+    enqueueSetState: function() {}
+}
+  , $ = Object.assign
+  , P = {};
+function p(e, t, n) {
+    this.props = e,
+    this.context = t,
+    this.refs = P,
+    this.updater = n || T
+}
+p.prototype.isReactComponent = {};
+p.prototype.setState = function(e, t) {
+    if (typeof e != "object" && typeof e != "function" && e != null)
+        throw Error("setState(...): takes an object of state variables to update or a function which returns an object of state variables.");
+    this.updater.enqueueSetState(this, e, t, "setState")
+}
+;
+p.prototype.forceUpdate = function(e) {
+    this.updater.enqueueForceUpdate(this, e, "forceUpdate")
+}
+;
+function A() {}
+A.prototype = p.prototype;
+function v(e, t, n) {
+    this.props = e,
+    this.context = t,
+    this.refs = P,
+    this.updater = n || T
+}
+var w = v.prototype = new A;
+w.constructor = v;
+$(w, p.prototype);
+w.isPureReactComponent = !0;
+var j = Array.isArray
+  , D = Object.prototype.hasOwnProperty
+  , b = {
+    current: null
+}
+  , q = {
+    key: !0,
+    ref: !0,
+    __self: !0,
+    __source: !0
+};
+function B(e, t, n) {
+    var r, o = {}, s = null, c = null;
+    if (t != null)
+        for (r in t.ref !== void 0 && (c = t.ref),
+        t.key !== void 0 && (s = "" + t.key),
+        t)
+            D.call(t, r) && !q.hasOwnProperty(r) && (o[r] = t[r]);
+    var a = arguments.length - 2;
+    if (a === 1)
+        o.children = n;
+    else if (1 < a) {
+        for (var i = Array(a), f = 0; f < a; f++)
+            i[f] = arguments[f + 2];
+        o.children = i
+    }
+    if (e && e.defaultProps)
+        for (r in a = e.defaultProps,
+        a)
+            o[r] === void 0 && (o[r] = a[r]);
+    return {
+        $$typeof: y,
+        type: e,
+        key: s,
+        ref: c,
+        props: o,
+        _owner: b.current
+    }
+}
+function X(e, t) {
+    return {
+        $$typeof: y,
+        type: e.type,
+        key: t,
+        ref: e.ref,
+        props: e.props,
+        _owner: e._owner
+    }
+}
+function x(e) {
+    return typeof e == "object" && e !== null && e.$$typeof === y
+}
+function Z(e) {
+    var t = {
+        "=": "=0",
+        ":": "=2"
+    };
+    return "$" + e.replace(/[=:]/g, function(n) {
+        return t[n]
+    })
+}
+var R = /\/+/g;
+function k(e, t) {
+    return typeof e == "object" && e !== null && e.key != null ? Z("" + e.key) : t.toString(36)
+}
+function h(e, t, n, r, o) {
+    var s = typeof e;
+    (s === "undefined" || s === "boolean") && (e = null);
+    var c = !1;
+    if (e === null)
+        c = !0;
+    else
+        switch (s) {
+        case "string":
+        case "number":
+            c = !0;
+            break;
+        case "object":
+            switch (e.$$typeof) {
+            case y:
+            case F:
+                c = !0
+            }
+        }
+    if (c)
+        return c = e,
+        o = o(c),
+        e = r === "" ? "." + k(c, 0) : r,
+        j(o) ? (n = "",
+        e != null && (n = e.replace(R, "$&/") + "/"),
+        h(o, t, n, "", function(f) {
+            return f
+        })) : o != null && (x(o) && (o = X(o, n + (!o.key || c && c.key === o.key ? "" : ("" + o.key).replace(R, "$&/") + "/") + e)),
+        t.push(o)),
+        1;
+    if (c = 0,
+    r = r === "" ? "." : r + ":",
+    j(e))
+        for (var a = 0; a < e.length; a++) {
+            s = e[a];
+            var i = r + k(s, a);
+            c += h(s, t, n, i, o)
+        }
+    else if (i = Q(e),
+    typeof i == "function")
+        for (e = i.call(e),
+        a = 0; !(s = e.next()).done; )
+            s = s.value,
+            i = r + k(s, a++),
+            c += h(s, t, n, i, o);
+    else if (s === "object")
+        throw t = String(e),
+        Error("Objects are not valid as a React child (found: " + (t === "[object Object]" ? "object with keys {" + Object.keys(e).join(", ") + "}" : t) + "). If you meant to render a collection of children, use an array instead.");
+    return c
+}
+function d(e, t, n) {
+    if (e == null)
+        return e;
+    var r = []
+      , o = 0;
+    return h(e, r, "", "", function(s) {
+        return t.call(n, s, o++)
+    }),
+    r
+}
+function ee(e) {
+    if (e._status === -1) {
+        var t = e._result;
+        t = t(),
+        t.then(function(n) {
+            (e._status === 0 || e._status === -1) && (e._status = 1,
+            e._result = n)
+        }, function(n) {
+            (e._status === 0 || e._status === -1) && (e._status = 2,
+            e._result = n)
+        }),
+        e._status === -1 && (e._status = 0,
+        e._result = t)
+    }
+    if (e._status === 1)
+        return e._result.default;
+    throw e._result
+}
+var l = {
+    current: null
+}
+  , m = {
+    transition: null
+}
+  , te = {
+    ReactCurrentDispatcher: l,
+    ReactCurrentBatchConfig: m,
+    ReactCurrentOwner: b
+};
+function I() {
+    throw Error("act(...) is not supported in production builds of React.")
+}
+u.Children = {
+    map: d,
+    forEach: function(e, t, n) {
+        d(e, function() {
+            t.apply(this, arguments)
+        }, n)
+    },
+    count: function(e) {
+        var t = 0;
+        return d(e, function() {
+            t++
+        }),
+        t
+    },
+    toArray: function(e) {
+        return d(e, function(t) {
+            return t
+        }) || []
+    },
+    only: function(e) {
+        if (!x(e))
+            throw Error("React.Children.only expected to receive a single React element child.");
+        return e
+    }
+};
+u.Component = p;
+u.Fragment = J;
+u.Profiler = W;
+u.PureComponent = v;
+u.StrictMode = U;
+u.Suspense = H;
+u.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = te;
+u.act = I;
+u.cloneElement = function(e, t, n) {
+    if (e == null)
+        throw Error("React.cloneElement(...): The argument must be a React element, but you passed " + e + ".");
+    var r = $({}, e.props)
+      , o = e.key
+      , s = e.ref
+      , c = e._owner;
+    if (t != null) {
+        if (t.ref !== void 0 && (s = t.ref,
+        c = b.current),
+        t.key !== void 0 && (o = "" + t.key),
+        e.type && e.type.defaultProps)
+            var a = e.type.defaultProps;
+        for (i in t)
+            D.call(t, i) && !q.hasOwnProperty(i) && (r[i] = t[i] === void 0 && a !== void 0 ? a[i] : t[i])
+    }
+    var i = arguments.length - 2;
+    if (i === 1)
+        r.children = n;
+    else if (1 < i) {
+        a = Array(i);
+        for (var f = 0; f < i; f++)
+            a[f] = arguments[f + 2];
+        r.children = a
+    }
+    return {
+        $$typeof: y,
+        type: e.type,
+        key: o,
+        ref: s,
+        props: r,
+        _owner: c
+    }
+}
+;
+u.createContext = function(e) {
+    return e = {
+        $$typeof: V,
+        _currentValue: e,
+        _currentValue2: e,
+        _threadCount: 0,
+        Provider: null,
+        Consumer: null,
+        _defaultValue: null,
+        _globalName: null
+    },
+    e.Provider = {
+        $$typeof: Y,
+        _context: e
+    },
+    e.Consumer = e
+}
+;
+u.createElement = B;
+u.createFactory = function(e) {
+    var t = B.bind(null, e);
+    return t.type = e,
+    t
+}
+;
+u.createRef = function() {
+    return {
+        current: null
+    }
+}
+;
+u.forwardRef = function(e) {
+    return {
+        $$typeof: z,
+        render: e
+    }
+}
+;
+u.isValidElement = x;
+u.lazy = function(e) {
+    return {
+        $$typeof: K,
+        _payload: {
+            _status: -1,
+            _result: e
+        },
+        _init: ee
+    }
+}
+;
+u.memo = function(e, t) {
+    return {
+        $$typeof: G,
+        type: e,
+        compare: t === void 0 ? null : t
+    }
+}
+;
+u.startTransition = function(e) {
+    var t = m.transition;
+    m.transition = {};
+    try {
+        e()
+    } finally {
+        m.transition = t
+    }
+}
+;
+u.unstable_act = I;
+u.useCallback = function(e, t) {
+    return l.current.useCallback(e, t)
+}
+;
+u.useContext = function(e) {
+    return l.current.useContext(e)
+}
+;
+u.useDebugValue = function() {}
+;
+u.useDeferredValue = function(e) {
+    return l.current.useDeferredValue(e)
+}
+;
+u.useEffect = function(e, t) {
+    return l.current.useEffect(e, t)
+}
+;
+u.useId = function() {
+    return l.current.useId()
+}
+;
+u.useImperativeHandle = function(e, t, n) {
+    return l.current.useImperativeHandle(e, t, n)
+}
+;
+u.useInsertionEffect = function(e, t) {
+    return l.current.useInsertionEffect(e, t)
+}
+;
+u.useLayoutEffect = function(e, t) {
+    return l.current.useLayoutEffect(e, t)
+}
+;
+u.useMemo = function(e, t) {
+    return l.current.useMemo(e, t)
+}
+;
+u.useReducer = function(e, t, n) {
+    return l.current.useReducer(e, t, n)
+}
+;
+u.useRef = function(e) {
+    return l.current.useRef(e)
+}
+;
+u.useState = function(e) {
+    return l.current.useState(e)
+}
+;
+u.useSyncExternalStore = function(e, t, n) {
+    return l.current.useSyncExternalStore(e, t, n)
+}
+;
+u.useTransition = function() {
+    return l.current.useTransition()
+}
+;
+u.version = "18.3.1";
+C.exports = u;
+var g = C.exports;
+const re = L(g)
+  , de = M({
+    __proto__: null,
+    default: re
+}, [g]);
+/**
+ * @license React
+ * react-jsx-runtime.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+var ne = g
+  , oe = Symbol.for("react.element")
+  , ue = Symbol.for("react.fragment")
+  , se = Object.prototype.hasOwnProperty
+  , ce = ne.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner
+  , ie = {
+    key: !0,
+    ref: !0,
+    __self: !0,
+    __source: !0
+};
+function N(e, t, n) {
+    var r, o = {}, s = null, c = null;
+    n !== void 0 && (s = "" + n),
+    t.key !== void 0 && (s = "" + t.key),
+    t.ref !== void 0 && (c = t.ref);
+    for (r in t)
+        se.call(t, r) && !ie.hasOwnProperty(r) && (o[r] = t[r]);
+    if (e && e.defaultProps)
+        for (r in t = e.defaultProps,
+        t)
+            o[r] === void 0 && (o[r] = t[r]);
+    return {
+        $$typeof: oe,
+        type: e,
+        key: s,
+        ref: c,
+        props: o,
+        _owner: ce.current
+    }
+}
+_.Fragment = ue;
+_.jsx = N;
+_.jsxs = N;
+E.exports = _;
+var O = E.exports;
+const ae = "Test Your Knowledge of Miner's Jargon!"
+  , le = {
+    successTitle: "Great Job!",
+    successText: O.jsxs("span", {
+        children: ["You", "'", "re no Johnny Newcome. You know miner jargon like the back of your hand, and you", "'", "d have no problem chatting with the muckmen ", "'", "round the tipple. Click below to access exclusive content from our archives with the password: ", O.jsx("span", {
+            className: "fw-bold",
+            children: "PICKAXE"
+        })]
+    }),
+    successButtonText: "Access Content",
+    failButtonText: "Retry",
+    successButtonRoute: {
+        name: "Content",
+        params: {
+            assignment: 1
+        }
+    },
+    failTitle: "Rats!",
+    failText: "Looks like your luster didn't pass muster this time around. But, don't break your pick! Take another look at some of the content from our archives to get better acquainted with miner jargon, and you'll do better next time."
+}
+  , fe = [{
+    question: "What were strikebreakers known as?",
+    answers: [{
+        key: "A",
+        text: "Poorboys",
+        correct: !1
+    }, {
+        key: "B",
+        text: "Blacklegs",
+        correct: !0
+    }, {
+        key: "C",
+        text: "Outta Towners",
+        correct: !1
+    }, {
+        key: "D",
+        text: "Hardbacks",
+        correct: !1
+    }]
+}, {
+    question: "What was the usual nickname for a new miner?",
+    answers: [{
+        key: "A",
+        text: "Jimmy Pickaxe",
+        correct: !1
+    }, {
+        key: "B",
+        text: "Danny Softhands",
+        correct: !1
+    }, {
+        key: "C",
+        text: "Johnny Newcome",
+        correct: !0
+    }, {
+        key: "D",
+        text: "Shineboot Jack",
+        correct: !1
+    }]
+}, {
+    question: "What did it mean if you were slabbed?",
+    answers: [{
+        key: "A",
+        text: "You were fired",
+        correct: !1
+    }, {
+        key: "B",
+        text: "You were covered in mud",
+        correct: !1
+    }, {
+        key: "C",
+        text: "You lost a fight",
+        correct: !1
+    }, {
+        key: "D",
+        text: "You were hit with a falling rock",
+        correct: !0
+    }]
+}, {
+    question: "Who was Quinine Jimmy?",
+    answers: [{
+        key: "A",
+        text: "The mining camp doctor on duty",
+        correct: !0
+    }, {
+        key: "B",
+        text: "The bartender at the local pub",
+        correct: !1
+    }, {
+        key: "C",
+        text: "A miner that just got out of the hospital",
+        correct: !1
+    }, {
+        key: "D",
+        text: "A miner that complained constantly",
+        correct: !1
+    }]
+}, {
+    question: "What was the term for the spot where mine cars are emptied of their coal?",
+    answers: [{
+        key: "A",
+        text: "Dirtbucket",
+        correct: !1
+    }, {
+        key: "B",
+        text: "Tipple",
+        correct: !0
+    }, {
+        key: "C",
+        text: "Rockbin",
+        correct: !1
+    }, {
+        key: "D",
+        text: "Dumper",
+        correct: !1
+    }]
+}, {
+    question: "What would miners call the layers of soil and rock covering a coal seam?",
+    answers: [{
+        key: "A",
+        text: "Thickdirt",
+        correct: !1
+    }, {
+        key: "B",
+        text: "Hell's Trapdoor",
+        correct: !1
+    }, {
+        key: "C",
+        text: "Overburden",
+        correct: !0
+    }, {
+        key: "D",
+        text: "Rockhaul",
+        correct: !1
+    }]
+}, {
+    question: 'If another miner runs out yelling "Roof fall!", what does he mean?',
+    answers: [{
+        key: "A",
+        text: "The exposed coal seam ran out",
+        correct: !1
+    }, {
+        key: "B",
+        text: "The miner's helmet fell over his eyes",
+        correct: !1
+    }, {
+        key: "C",
+        text: "They just finished sounding the next tunnel's structure",
+        correct: !1
+    }, {
+        key: "D",
+        text: "The tunnel collapsed",
+        correct: !0
+    }]
+}]
+  , he = Object.freeze(Object.defineProperty({
+    __proto__: null,
+    meta: le,
+    questions: fe,
+    title: ae
+}, Symbol.toStringTag, {
+    value: "Module"
+}));
+const React = de, React$1 = re, assignment1 = he, commonjsGlobal = pe, getAugmentedNamespace = ye, getDefaultExportFromCjs = L, jsxRuntimeExports = O, reactExports = g;
+
 var jA = Object.defineProperty;
 var rx = e => {
     throw TypeError(e)
@@ -31,7 +719,6 @@ var lu = (e, t, n, i) => ({
         return w(e, t, i)
     }
 });
-import {r as reactExports, g as getDefaultExportFromCjs, R as React, j as jsxRuntimeExports, a as React$1, c as commonjsGlobal, b as assignment1, d as getAugmentedNamespace} from "quiz-questions-CUbXBx_m.js";
 var UA = BA( (exports, module) => {
     function _mergeNamespaces(e, t) {
         for (var n = 0; n < t.length; n++) {
@@ -996,7 +1683,7 @@ var UA = BA( (exports, module) => {
         }
         : e
     }(function(e, t) {
-        if (e.namespaceURI !== "http://www.w3.org/2000/svg" || "innerHTML" in e)
+        if (e.namespaceURI !== "http://www.w3.org/2000/svg" || "innerHTML"in e)
             e.innerHTML = t;
         else {
             for (mb = mb || document.createElement("div"),
@@ -1108,7 +1795,7 @@ var UA = BA( (exports, module) => {
             if (t.dangerouslySetInnerHTML != null) {
                 if (t.children != null)
                     throw Error(p(60));
-                if (typeof t.dangerouslySetInnerHTML != "object" || !("__html" in t.dangerouslySetInnerHTML))
+                if (typeof t.dangerouslySetInnerHTML != "object" || !("__html"in t.dangerouslySetInnerHTML))
                     throw Error(p(61))
             }
             if (t.style != null && typeof t.style != "object")
@@ -1919,7 +2606,7 @@ var UA = BA( (exports, module) => {
     function nd() {
         if (md)
             return md;
-        var e, t = ld, n = t.length, i, s = "value" in kd ? kd.value : kd.textContent, a = s.length;
+        var e, t = ld, n = t.length, i, s = "value"in kd ? kd.value : kd.textContent, a = s.length;
         for (e = 0; e < n && t[e] === s[e]; e++)
             ;
         var c = n - e;
@@ -1929,7 +2616,7 @@ var UA = BA( (exports, module) => {
     }
     function od(e) {
         var t = e.keyCode;
-        return "charCode" in e ? (e = e.charCode,
+        return "charCode"in e ? (e = e.charCode,
         e === 0 && t === 13 && (e = 13)) : e = t,
         e === 10 && (e = 13),
         32 <= e || e === 13 ? e : 0
@@ -2002,13 +2689,13 @@ var UA = BA( (exports, module) => {
             return e.relatedTarget === void 0 ? e.fromElement === e.srcElement ? e.toElement : e.fromElement : e.relatedTarget
         },
         movementX: function(e) {
-            return "movementX" in e ? e.movementX : (e !== yd && (yd && e.type === "mousemove" ? (wd = e.screenX - yd.screenX,
+            return "movementX"in e ? e.movementX : (e !== yd && (yd && e.type === "mousemove" ? (wd = e.screenX - yd.screenX,
             xd = e.screenY - yd.screenY) : xd = wd = 0,
             yd = e),
             wd)
         },
         movementY: function(e) {
-            return "movementY" in e ? e.movementY : xd
+            return "movementY"in e ? e.movementY : xd
         }
     }), Bd = rd(Ad), Cd = A({}, Ad, {
         dataTransfer: 0
@@ -2020,7 +2707,7 @@ var UA = BA( (exports, module) => {
         pseudoElement: 0
     }), Hd = rd(Gd), Id = A({}, sd, {
         clipboardData: function(e) {
-            return "clipboardData" in e ? e.clipboardData : window.clipboardData
+            return "clipboardData"in e ? e.clipboardData : window.clipboardData
         }
     }), Jd = rd(Id), Kd = A({}, sd, {
         data: 0
@@ -2149,20 +2836,20 @@ var UA = BA( (exports, module) => {
       , Xd = rd(Wd)
       , Yd = A({}, Ad, {
         deltaX: function(e) {
-            return "deltaX" in e ? e.deltaX : "wheelDeltaX" in e ? -e.wheelDeltaX : 0
+            return "deltaX"in e ? e.deltaX : "wheelDeltaX"in e ? -e.wheelDeltaX : 0
         },
         deltaY: function(e) {
-            return "deltaY" in e ? e.deltaY : "wheelDeltaY" in e ? -e.wheelDeltaY : "wheelDelta" in e ? -e.wheelDelta : 0
+            return "deltaY"in e ? e.deltaY : "wheelDeltaY"in e ? -e.wheelDeltaY : "wheelDelta"in e ? -e.wheelDelta : 0
         },
         deltaZ: 0,
         deltaMode: 0
     })
       , Zd = rd(Yd)
       , $d = [9, 13, 27, 32]
-      , ae = ia && "CompositionEvent" in window
+      , ae = ia && "CompositionEvent"in window
       , be = null;
-    ia && "documentMode" in document && (be = document.documentMode);
-    var ce = ia && "TextEvent" in window && !be
+    ia && "documentMode"in document && (be = document.documentMode);
+    var ce = ia && "TextEvent"in window && !be
       , de = ia && (!ae || be && 8 < be && 11 >= be)
       , ee = " "
       , fe = !1;
@@ -2182,7 +2869,7 @@ var UA = BA( (exports, module) => {
     }
     function he(e) {
         return e = e.detail,
-        typeof e == "object" && "data" in e ? e.data : null
+        typeof e == "object" && "data"in e ? e.data : null
     }
     var ie = !1;
     function je(e, t) {
@@ -2270,7 +2957,7 @@ var UA = BA( (exports, module) => {
     if (ia) {
         var xe;
         if (ia) {
-            var ye = "oninput" in document;
+            var ye = "oninput"in document;
             if (!ye) {
                 var ze = document.createElement("div");
                 ze.setAttribute("oninput", "return;"),
@@ -2362,7 +3049,7 @@ var UA = BA( (exports, module) => {
         }
     }
     function Le(e, t) {
-        return e && t ? e === t ? !0 : e && e.nodeType === 3 ? !1 : t && t.nodeType === 3 ? Le(e, t.parentNode) : "contains" in e ? e.contains(t) : e.compareDocumentPosition ? !!(e.compareDocumentPosition(t) & 16) : !1 : !1
+        return e && t ? e === t ? !0 : e && e.nodeType === 3 ? !1 : t && t.nodeType === 3 ? Le(e, t.parentNode) : "contains"in e ? e.contains(t) : e.compareDocumentPosition ? !!(e.compareDocumentPosition(t) & 16) : !1 : !1
     }
     function Me() {
         for (var e = window, t = Xa(); t instanceof e.HTMLIFrameElement; ) {
@@ -2392,7 +3079,7 @@ var UA = BA( (exports, module) => {
                 if (t = i.start,
                 e = i.end,
                 e === void 0 && (e = t),
-                "selectionStart" in n)
+                "selectionStart"in n)
                     n.selectionStart = t,
                     n.selectionEnd = Math.min(e, n.value.length);
                 else if (e = (t = n.ownerDocument || document) && t.defaultView || window,
@@ -2428,7 +3115,7 @@ var UA = BA( (exports, module) => {
                 e.element.scrollTop = e.top
         }
     }
-    var Pe = ia && "documentMode" in document && 11 >= document.documentMode
+    var Pe = ia && "documentMode"in document && 11 >= document.documentMode
       , Qe = null
       , Re = null
       , Se = null
@@ -2436,7 +3123,7 @@ var UA = BA( (exports, module) => {
     function Ue(e, t, n) {
         var i = n.window === n ? n.document : n.nodeType === 9 ? n : n.ownerDocument;
         Te || Qe == null || Qe !== Xa(i) || (i = Qe,
-        "selectionStart" in i && Ne(i) ? i = {
+        "selectionStart"in i && Ne(i) ? i = {
             start: i.selectionStart,
             end: i.selectionEnd
         } : (i = (i.ownerDocument && i.ownerDocument.defaultView || window).getSelection(),
@@ -2471,10 +3158,10 @@ var UA = BA( (exports, module) => {
       , Xe = {}
       , Ye = {};
     ia && (Ye = document.createElement("div").style,
-    "AnimationEvent" in window || (delete We.animationend.animation,
+    "AnimationEvent"in window || (delete We.animationend.animation,
     delete We.animationiteration.animation,
     delete We.animationstart.animation),
-    "TransitionEvent" in window || delete We.transitionend.transition);
+    "TransitionEvent"in window || delete We.transitionend.transition);
     function Ze(e) {
         if (Xe[e])
             return Xe[e];
@@ -2881,7 +3568,7 @@ var UA = BA( (exports, module) => {
                 else
                     ie ? ge(e, n) && (at = "onCompositionEnd") : e === "keydown" && n.keyCode === 229 && (at = "onCompositionStart");
                 at && (de && n.locale !== "ko" && (ie || at !== "onCompositionStart" ? at === "onCompositionEnd" && ie && (q = nd()) : (kd = _,
-                ld = "value" in kd ? kd.value : kd.textContent,
+                ld = "value"in kd ? kd.value : kd.textContent,
                 ie = !0)),
                 et = oe(y, at),
                 0 < et.length && (at = new Ld(at,e,null,n,_),
@@ -6224,7 +6911,7 @@ Error generating stack: ` + a.message + `
         if (Cf = dd,
         e = Me(),
         Ne(e)) {
-            if ("selectionStart" in e)
+            if ("selectionStart"in e)
                 var n = {
                     start: e.selectionStart,
                     end: e.selectionEnd
@@ -9316,7 +10003,7 @@ Error generating stack: ` + a.message + `
       , normalizeSearch = e => !e || e === "?" ? "" : e.startsWith("?") ? e : "?" + e
       , normalizeHash = e => !e || e === "#" ? "" : e.startsWith("#") ? e : "#" + e;
     function isRouteErrorResponse(e) {
-        return e != null && typeof e.status == "number" && typeof e.statusText == "string" && typeof e.internal == "boolean" && "data" in e
+        return e != null && typeof e.status == "number" && typeof e.statusText == "string" && typeof e.internal == "boolean" && "data"in e
     }
     const validMutationMethodsArr = ["post", "put", "patch", "delete"];
     new Set(validMutationMethodsArr);
@@ -9971,8 +10658,8 @@ Error generating stack: ` + a.message + `
             children: jsxRuntimeExports.jsxs("div", {
                 className: "d-flex flex-column justify-content-center align-items-center w-100",
                 children: [jsxRuntimeExports.jsx(BannerImage, {
-                    wideSource: "/images/photo-banner-home-wide.jpg",
-                    source: "/images/photo-banner-home.jpg",
+                    wideSource: "./images/photo-banner-home-wide.jpg",
+                    source: "./images/photo-banner-home.jpg",
                     altText: "Home"
                 }), jsxRuntimeExports.jsxs(SectionContent, {
                     orangeHrEnabled: !0,
@@ -10014,8 +10701,8 @@ Error generating stack: ` + a.message + `
             children: jsxRuntimeExports.jsxs("div", {
                 className: "d-flex flex-column justify-content-center align-items-center w-100",
                 children: [jsxRuntimeExports.jsx(BannerImage, {
-                    wideSource: "/images/photo-banner-about-wide.jpg",
-                    source: "/images/photo-banner-about.jpg",
+                    wideSource: "./images/photo-banner-about-wide.jpg",
+                    source: "./images/photo-banner-about.jpg",
                     altText: "About"
                 }), jsxRuntimeExports.jsxs(SectionContent, {
                     headerText: "Our Heritage",
@@ -10043,8 +10730,8 @@ Error generating stack: ` + a.message + `
             children: jsxRuntimeExports.jsxs("div", {
                 className: "d-flex flex-column justify-content-center align-items-center w-100",
                 children: [jsxRuntimeExports.jsx(BannerImage, {
-                    wideSource: "/images/photo-banner-visit-wide.jpg",
-                    source: "/images/photo-banner-visit.jpg",
+                    wideSource: "./images/photo-banner-visit-wide.jpg",
+                    source: "./images/photo-banner-visit.jpg",
                     altText: "Visit"
                 }), jsxRuntimeExports.jsxs(SectionContent, {
                     headerText: "Visit Us",
@@ -10110,8 +10797,8 @@ Error generating stack: ` + a.message + `
             children: jsxRuntimeExports.jsxs("div", {
                 className: "d-flex flex-column justify-content-center align-items-center w-100",
                 children: [jsxRuntimeExports.jsx(BannerImage, {
-                    wideSource: "/images/photo-banner-exhibits-wide.jpg",
-                    source: "/images/photo-banner-exhibits.jpg",
+                    wideSource: "./images/photo-banner-exhibits-wide.jpg",
+                    source: "./images/photo-banner-exhibits.jpg",
                     altText: "Exhibits"
                 }), jsxRuntimeExports.jsxs(SectionContent, {
                     headerText: "Permanent Exhibits",
@@ -10157,8 +10844,8 @@ Error generating stack: ` + a.message + `
                     children: "Roughly thirty years have passed, and the mystery remains unsolved: What was the true cause of the mining fiasco that devastated Cooper’s Rock in 1989? The only facts that are known for certain about the blast are its aftereffects on the community. We have gathered first-person accounts of the incident and its aftershocks to paint a clearer picture of an event that has long been mired in rumor, controversy, misinformation, and local folklore. Experience these accounts in our immersive new exhibit that features audio recordings of interviews with survivors, witnesses, and the families of the loved ones who didn’t make it out of the mine that fateful day."
                 }), jsxRuntimeExports.jsx(BannerImage, {
                     className: "cp-5 my-5",
-                    wideSource: "/images/miners.png",
-                    source: "/images/miners.png",
+                    wideSource: "./images/miners.png",
+                    source: "./images/miners.png",
                     altText: "miners"
                 }), jsxRuntimeExports.jsx(SectionContent, {
                     headerText: "Temporary Installations",
@@ -10175,8 +10862,8 @@ Error generating stack: ` + a.message + `
                     children: "Although Sarah Quetawah currently resides with her family in Toronto, the influence of her childhood in Cooper’s Rock shines through in much of her artwork. Her LED-illuminated translucent renderings of two-headed deer grazing while simultaneously gazing towards the viewer take deep inspiration from local folklore and Quetawah’s own experiences roaming the nearby forests as an imaginative teenager."
                 }), jsxRuntimeExports.jsx(BannerImage, {
                     className: "cp-5 my-5",
-                    wideSource: "/images/fossils.png",
-                    source: "/images/fossils.png",
+                    wideSource: "./images/fossils.png",
+                    source: "./images/fossils.png",
                     altText: "fossils"
                 }), jsxRuntimeExports.jsx(SectionContent, {
                     headerText: "Archives",
@@ -10200,8 +10887,8 @@ Error generating stack: ` + a.message + `
             children: jsxRuntimeExports.jsxs("div", {
                 className: "d-flex flex-column justify-content-center align-items-center w-100",
                 children: [jsxRuntimeExports.jsx(BannerImage, {
-                    wideSource: "/images/photo-banner-staff-wide.jpg",
-                    source: "/images/photo-banner-staff.jpg",
+                    wideSource: "./images/photo-banner-staff-wide.jpg",
+                    source: "./images/photo-banner-staff.jpg",
                     altText: "staff"
                 }), jsxRuntimeExports.jsxs(SectionContent, {
                     headerText: "Our Staff",
@@ -10277,8 +10964,8 @@ Error generating stack: ` + a.message + `
             children: jsxRuntimeExports.jsxs("div", {
                 className: "d-flex flex-column justify-content-center align-items-center w-100",
                 children: [jsxRuntimeExports.jsx(BannerImage, {
-                    wideSource: "/images/photo-banner-volunteer-wide.jpg",
-                    source: "/images/photo-banner-volunteer.jpg",
+                    wideSource: "./images/photo-banner-volunteer-wide.jpg",
+                    source: "./images/photo-banner-volunteer.jpg",
                     altText: "volunteer"
                 }), jsxRuntimeExports.jsx(SectionContent, {
                     headerText: "Volunteer",
@@ -11534,7 +12221,7 @@ Error generating stack: ` + a.message + `
         return reactExports.useMemo( () => mergeRefs$1(e, t), [e, t])
     }
     function safeFindDOMNode(e) {
-        return e && "setState" in e ? ReactDOM.findDOMNode(e) : e ?? null
+        return e && "setState"in e ? ReactDOM.findDOMNode(e) : e ?? null
     }
     const TransitionWrapper = React$1.forwardRef( ({onEnter: e, onEntering: t, onEntered: n, onExit: i, onExiting: s, onExited: a, addEndListener: c, children: h, childRef: d, ...y}, _) => {
         const $ = reactExports.useRef(null)
@@ -14642,7 +15329,7 @@ Arguments: ` + Array.prototype.slice.call(i).join("") + `
             try {
                 t = globalLocale._abbr,
                 n = require,
-                n("locale/" + e),
+                n("./locale/" + e),
                 getSetGlobalLocale(t)
             } catch {
                 locales[e] = null
@@ -15242,7 +15929,7 @@ Arguments: ` + Array.prototype.slice.call(i).join("") + `
             h: parseIso(i[6], s),
             m: parseIso(i[7], s),
             s: parseIso(i[8], s)
-        }) : n == null ? n = {} : typeof n == "object" && ("from" in n || "to" in n) && (c = momentsDifference(createLocal(n.from), createLocal(n.to)),
+        }) : n == null ? n = {} : typeof n == "object" && ("from"in n || "to"in n) && (c = momentsDifference(createLocal(n.from), createLocal(n.to)),
         n = {},
         n.ms = c.milliseconds,
         n.M = c.months),
@@ -17750,7 +18437,7 @@ Arguments: ` + Array.prototype.slice.call(i).join("") + `
                         return !bt;
                     for (o = mr(o); dt--; ) {
                         var qt = u[dt];
-                        if (It && qt[2] ? qt[1] !== o[qt[0]] : !(qt[0] in o))
+                        if (It && qt[2] ? qt[1] !== o[qt[0]] : !(qt[0]in o))
                             return !1
                     }
                     for (; ++dt < bt; ) {
@@ -18719,7 +19406,7 @@ Arguments: ` + Array.prototype.slice.call(i).join("") + `
                     if (or && !er) {
                         var zr = o.constructor
                           , cs = l.constructor;
-                        zr != cs && "constructor" in o && "constructor" in l && !(typeof zr == "function" && zr instanceof zr && typeof cs == "function" && cs instanceof cs) && (or = !1)
+                        zr != cs && "constructor"in o && "constructor"in l && !(typeof zr == "function" && zr instanceof zr && typeof cs == "function" && cs instanceof cs) && (or = !1)
                     }
                     return bt.delete(o),
                     bt.delete(l),
@@ -19690,9 +20377,9 @@ Arguments: ` + Array.prototype.slice.call(i).join("") + `
                         throw new Yr(c);
                     l = ms(l) || 0,
                     Er(u) && (En = !!u.leading,
-                    Sn = "maxWait" in u,
+                    Sn = "maxWait"in u,
                     bt = Sn ? Sr(ms(u.maxWait) || 0, l) : bt,
-                    jn = "trailing" in u ? !!u.trailing : jn);
+                    jn = "trailing"in u ? !!u.trailing : jn);
                     function zn(Tr) {
                         var bs = k
                           , Qs = dt;
@@ -19846,8 +20533,8 @@ Arguments: ` + Array.prototype.slice.call(i).join("") + `
                       , dt = !0;
                     if (typeof o != "function")
                         throw new Yr(c);
-                    return Er(u) && (k = "leading" in u ? !!u.leading : k,
-                    dt = "trailing" in u ? !!u.trailing : dt),
+                    return Er(u) && (k = "leading"in u ? !!u.leading : k,
+                    dt = "trailing"in u ? !!u.trailing : dt),
                     F_(o, l, {
                         leading: k,
                         maxWait: l,
@@ -20484,9 +21171,9 @@ function print() { __p += __j.call(arguments, '') }
                     var u = vt
                       , k = nt;
                     if (Er(l)) {
-                        var dt = "separator" in l ? l.separator : dt;
-                        u = "length" in l ? sr(l.length) : u,
-                        k = "omission" in l ? ss(l.omission) : k
+                        var dt = "separator"in l ? l.separator : dt;
+                        u = "length"in l ? sr(l.length) : u,
+                        k = "omission"in l ? ss(l.omission) : k
                     }
                     o = pr(o);
                     var bt = o.length;
@@ -20602,7 +21289,7 @@ function print() { __p += __j.call(arguments, '') }
                     l = o,
                     o = this,
                     dt = _l(l, Or(l)));
-                    var bt = !(Er(u) && "chain" in u) || !!u.chain
+                    var bt = !(Er(u) && "chain"in u) || !!u.chain
                       , It = Ks(o);
                     return Vr(dt, function(qt) {
                         var tn = l[qt];
@@ -22163,8 +22850,8 @@ function print() { __p += __j.call(arguments, '') }
                             onClick: () => this.showMailBox(!0),
                             className: `fab-mail shadow bg-orange align-items-center justify-content-center ${this.state.showMailBox ? "d-none" : "d-flex"}`,
                             children: [jsxRuntimeExports.jsx("img", {
-                                src: "/images/mail.png",
-                                alt: "/images/mail.png",
+                                src: "./images/mail.png",
+                                alt: "./images/mail.png",
                                 style: {
                                     width: "28px"
                                 }
@@ -22186,7 +22873,7 @@ function print() { __p += __j.call(arguments, '') }
                                             height: "15px",
                                             width: "15px"
                                         },
-                                        src: "/images/close.png",
+                                        src: "./images/close.png",
                                         alt: "close",
                                         onClick: () => {
                                             this.showInbox(),
@@ -22260,8 +22947,8 @@ function print() { __p += __j.call(arguments, '') }
             children: jsxRuntimeExports.jsxs("div", {
                 className: "d-flex flex-column justify-content-center align-items-center w-100",
                 children: [jsxRuntimeExports.jsx(BannerImage, {
-                    wideSource: "/images/photo-banner-contact-wide.jpg",
-                    source: "/images/photo-banner-contact.jpg",
+                    wideSource: "./images/photo-banner-contact-wide.jpg",
+                    source: "./images/photo-banner-contact.jpg",
                     altText: "volunteer"
                 }), jsxRuntimeExports.jsxs(SectionContent, {
                     headerText: "Contact Us",
@@ -22277,11 +22964,11 @@ function print() { __p += __j.call(arguments, '') }
             })
         })
     }
-    const Miners1 = "/assets/Miners1-C83yF3GZ.jpg"
-      , Miners2 = "/assets/Miners2-C4ac4j-W.jpg"
-      , Miners3 = "/assets/Miners3-CzZKBGoI.jpg"
-      , Miners4 = "/assets/Miners4-TQ_Q_UrR.jpg"
-      , Miners5 = "/assets/Miners5-BlNyxJOk.jpg";
+    const Miners1 = "./assets/Miners1-C83yF3GZ.jpg"
+      , Miners2 = "./assets/Miners2-C4ac4j-W.jpg"
+      , Miners3 = "./assets/Miners3-CzZKBGoI.jpg"
+      , Miners4 = "./assets/Miners4-TQ_Q_UrR.jpg"
+      , Miners5 = "./assets/Miners5-BlNyxJOk.jpg";
     function OralHistoriesView() {
         return jsxRuntimeExports.jsxs("div", {
             className: "OralHistoriesView w-100 overflow-hidden",
@@ -22407,8 +23094,8 @@ function print() { __p += __j.call(arguments, '') }
             }, s.key))]
         }, "Question" + e.index)
     }
-    const phenemeChart = "/assets/pheneme-chart-ClmvKMHI.png"
-      , phenemeChartLg = "/assets/pheneme-chart-lg-rJX2AFOZ.png";
+    const phenemeChart = "./assets/pheneme-chart-ClmvKMHI.png"
+      , phenemeChartLg = "./assets/pheneme-chart-lg-rJX2AFOZ.png";
     function QuizResult(e) {
         const {isSuccess: t, failureCallback: n, meta: i, id: s, title: a} = e;
         return jsxRuntimeExports.jsx("div", {
@@ -23312,7 +23999,7 @@ function print() { __p += __j.call(arguments, '') }
                     try {
                         const _e = await __variableDynamicImportRuntimeHelper(Object.assign({
                             "../components/Quiz/questions/assignment0.tsx": () => __vitePreload( () => Promise.resolve().then( () => assignment0), void 0),
-                            "../components/Quiz/questions/assignment1.tsx": () => __vitePreload( () => import("quiz-questions-CUbXBx_m.js").then(rt => rt.b), []),
+                            "../components/Quiz/questions/assignment1.tsx": () => Promise.resolve(assignment1),
                             "../components/Quiz/questions/assignment2.tsx": () => __vitePreload( () => Promise.resolve().then( () => assignment2), void 0),
                             "../components/Quiz/questions/assignment3.tsx": () => __vitePreload( () => Promise.resolve().then( () => assignment3), void 0),
                             "../components/Quiz/questions/assignment4.tsx": () => __vitePreload( () => Promise.resolve().then( () => assignment4), void 0),
@@ -23381,7 +24068,7 @@ function print() { __p += __j.call(arguments, '') }
             }), jsxRuntimeExports.jsxs("audio", {
                 controls: !0,
                 children: [jsxRuntimeExports.jsx("source", {
-                    src: "/media/silas_interview.mp3",
+                    src: "./media/silas_interview.mp3",
                     type: "audio/mp3"
                 }), "Your browser does not support the audio element."]
             })]
@@ -23393,9 +24080,9 @@ function print() { __p += __j.call(arguments, '') }
     }, Symbol.toStringTag, {
         value: "Module"
     }))
-      , MinePhoto1 = "/assets/MinePhoto1-C4VLoUnT.jpg"
-      , MinePhoto2 = "/assets/MinePhoto2-BHyS4OA4.jpg"
-      , MinePhoto3 = "/assets/MinePhoto3-DxTPRtmA.jpg";
+      , MinePhoto1 = "./assets/MinePhoto1-C4VLoUnT.jpg"
+      , MinePhoto2 = "./assets/MinePhoto2-BHyS4OA4.jpg"
+      , MinePhoto3 = "./assets/MinePhoto3-DxTPRtmA.jpg";
     function Content$3() {
         return jsxRuntimeExports.jsxs("div", {
             className: "d-flex flex-column align-items-center",
@@ -23439,31 +24126,26 @@ function print() { __p += __j.call(arguments, '') }
         , [e])
     }
     function Content$2() {
-        return useScript("https://fast.wistia.com/embed/medias/jlwrb7qty9.jsonp"),
-        useScript("https://fast.wistia.com/assets/external/E-v1.js"),
-        jsxRuntimeExports.jsx("div", {
+        return jsxRuntimeExports.jsx("div", {
             className: "d-flex flex-column w-100 justify-content-center align-items-center mb-5",
             children: jsxRuntimeExports.jsxs("div", {
                 className: "d-flex flex-column col-10",
                 children: [jsxRuntimeExports.jsx("div", {
                     className: "m-5 text-uppercase text-center fw-bold ch2",
                     children: "Lucille Walters Interview - 1984"
-                }), jsxRuntimeExports.jsx("div", {
-                    className: "wistia_responsive_padding wistia_responsive_padding_style",
-                    children: jsxRuntimeExports.jsx("div", {
-                        className: "wistia_responsive_wrapper wistia_responsive_wrapper_style",
-                        children: jsxRuntimeExports.jsx("div", {
-                            className: "wistia_embed wistia_embed_style wistia_async_jlwrb7qty9 seo=false videoFoam=true",
-                            children: jsxRuntimeExports.jsx("div", {
-                                className: "wistia_swatch wistia_swatch_style",
-                                children: jsxRuntimeExports.jsx("img", {
-                                    className: "wistia_swatch_img_style",
-                                    src: "https://fast.wistia.com/embed/medias/jlwrb7qty9/swatch",
-                                    alt: "swatch"
-                                })
-                            })
-                        })
-                    })
+                }), jsxRuntimeExports.jsxs("video", {
+                    controls: !0,
+                    className: "w-100",
+                    style: {
+                        maxWidth: "960px",
+                        margin: "0 auto",
+                        aspectRatio: "16 / 9",
+                        backgroundColor: "black"
+                    },
+                    children: [jsxRuntimeExports.jsx("source", {
+                        src: "./media/lucille-walters-interview.mp4",
+                        type: "video/mp4"
+                    }), "Your browser does not support the video element."]
                 })]
             })
         })
@@ -25037,7 +25719,7 @@ function print() { __p += __j.call(arguments, '') }
                 {
                     if (_util.isNodeJS && typeof commonjsRequire == "function")
                         PDFWorkerUtil.isWorkerDisabled = !0,
-                        PDFWorkerUtil.fallbackWorkerSrc = "pdf.worker.js";
+                        PDFWorkerUtil.fallbackWorkerSrc = "./pdf.worker.js";
                     else if (typeof document == "object") {
                         const q = (y = document == null ? void 0 : document.currentScript) == null ? void 0 : y.src;
                         q && (PDFWorkerUtil.fallbackWorkerSrc = q.replace(/(\.(?:min\.)?js)(\?.*)?$/i, ".worker$1$2"))
@@ -25514,7 +26196,7 @@ function print() { __p += __j.call(arguments, '') }
                                 switch (nt) {
                                 case "Font":
                                     const Vt = this._params;
-                                    if ("error" in mt) {
+                                    if ("error"in mt) {
                                         const Mt = mt.error;
                                         (0,
                                         _util.warn)(`Error during font loading: ${Mt}`),
@@ -32647,7 +33329,7 @@ function print() { __p += __j.call(arguments, '') }
                             const b = this.httpHeaders[x];
                             b !== void 0 && rt.setRequestHeader(x, b)
                         }
-                        return this.isHttp && "begin" in _e && "end" in _e ? (rt.setRequestHeader("Range", `bytes=${_e.begin}-${_e.end - 1}`),
+                        return this.isHttp && "begin"in _e && "end"in _e ? (rt.setRequestHeader("Range", `bytes=${_e.begin}-${_e.end - 1}`),
                         st.expectedStatus = c) : st.expectedStatus = a,
                         rt.responseType = "arraybuffer",
                         _e.onError && (rt.onerror = function(x) {
@@ -39287,7 +39969,7 @@ function print() { __p += __j.call(arguments, '') }
         __proto__: null,
         default: pdf
     }, [pdfExports])
-      , pdfjs = "default" in pdfjsModule ? pdf : pdfjsModule;
+      , pdfjs = "default"in pdfjsModule ? pdf : pdfjsModule;
     var __spreadArray = function(e, t, n) {
         if (n || arguments.length === 2)
             for (var i = 0, s = t.length, a; i < s; i++)
@@ -39736,7 +40418,7 @@ function print() { __p += __j.call(arguments, '') }
     }
     ;
     function isParameterObject(e) {
-        return typeof e == "object" && e !== null && ("data" in e || "range" in e || "url" in e)
+        return typeof e == "object" && e !== null && ("data"in e || "range"in e || "url"in e)
     }
     const Document = reactExports.forwardRef(function e(t, n) {
         var {children: i, className: s, error: a="Failed to load PDF file.", externalLinkRel: c, externalLinkTarget: h, file: d, inputRef: y, imageResourcesPath: _, loading: $="Loading PDF…", noData: J="No PDF file specified.", onItemClick: _e, onLoadError: rt, onLoadProgress: ct, onLoadSuccess: st, onPassword: x=defaultOnPassword, onSourceError: b, onSourceSuccess: tt, options: it, renderMode: F, rotate: et} = t
@@ -39820,7 +40502,7 @@ function print() { __p += __j.call(arguments, '') }
                 };
             if (invariant(typeof d == "object"),
             invariant(isParameterObject(d)),
-            "url" in d && typeof d.url == "string") {
+            "url"in d && typeof d.url == "string") {
                 if (isDataURI(d.url)) {
                     const {url: Ht} = d
                       , Wt = __rest$1(d, ["url"])
@@ -40080,10 +40762,10 @@ function print() { __p += __j.call(arguments, '') }
         return e in PDF_ROLE_TO_HTML_ROLE
     }
     function isStructTreeNode(e) {
-        return "children" in e
+        return "children"in e
     }
     function isStructTreeNodeWithOnlyContentChild(e) {
-        return isStructTreeNode(e) ? e.children.length === 1 && 0 in e.children && "id" in e.children[0] : !1
+        return isStructTreeNode(e) ? e.children.length === 1 && 0 in e.children && "id"in e.children[0] : !1
     }
     function getRoleAttributes(e) {
         const t = {};
@@ -40113,7 +40795,7 @@ function print() { __p += __j.call(arguments, '') }
                 }
             }
         } else
-            "id" in e && (t["aria-owns"] = e.id);
+            "id"in e && (t["aria-owns"] = e.id);
         return t
     }
     function getAttributes(e) {
@@ -40347,7 +41029,7 @@ function print() { __p += __j.call(arguments, '') }
         })
     }
     function isTextItem(e) {
-        return "str" in e
+        return "str"in e
     }
     function TextLayer() {
         const e = usePageContext();
@@ -40817,13 +41499,13 @@ function print() { __p += __j.call(arguments, '') }
                 className: "m-5 text-uppercase text-center font-weight-bold ch2",
                 children: "Internal Strahlenberg Emails"
             }), jsxRuntimeExports.jsx(Document, {
-                file: "/media/InternalStrahlenbergEmails.pdf",
+                file: "./media/InternalStrahlenbergEmails.pdf",
                 children: jsxRuntimeExports.jsx(Page, {
                     pageNumber: 1
                 })
             }), jsxRuntimeExports.jsx(Button$1, {
                 download: !0,
-                href: "/media/InternalStrahlenbergEmails.pdf",
+                href: "./media/InternalStrahlenbergEmails.pdf",
                 buttonText: "Download All Emails",
                 className: "cmt-5 mb-5 w-100 justify-content-center d-flex"
             })]
@@ -40843,13 +41525,13 @@ function print() { __p += __j.call(arguments, '') }
                 className: "m-5 text-uppercase text-center font-weight-bold ch2",
                 children: "Certificate of Completion"
             }), jsxRuntimeExports.jsx(Document, {
-                file: "/media/CertificateofCompletion.pdf",
+                file: "./media/CertificateofCompletion.pdf",
                 children: jsxRuntimeExports.jsx(Page, {
                     pageNumber: 1
                 })
             }), jsxRuntimeExports.jsx(Button$1, {
                 download: !0,
-                href: "/media/CertificateofCompletion.pdf",
+                href: "./media/CertificateofCompletion.pdf",
                 buttonText: "Download",
                 className: "cmt-5 mb-5 w-100 justify-content-center d-flex"
             })]
@@ -40938,7 +41620,7 @@ function print() { __p += __j.call(arguments, '') }
         name: "Content",
         component: ContentView
     }]
-      , Logo = "/assets/chc-logo-Bcu6FU0m.png"
+      , Logo = "./assets/chc-logo-Bcu6FU0m.png"
       , routeElements = defaultRoutes.concat(hiddenRoutes).map( (e, t) => e.component ? jsxRuntimeExports.jsx(Route, {
         path: e.path,
         element: jsxRuntimeExports.jsx(e.component, {})
@@ -41816,7 +42498,7 @@ function print() { __p += __j.call(arguments, '') }
                     return this._supportPointerEvents && (g.pointerType === Tn || g.pointerType === Fn)
                 }
                 static isSupported() {
-                    return "ontouchstart" in document.documentElement || navigator.maxTouchPoints > 0
+                    return "ontouchstart"in document.documentElement || navigator.maxTouchPoints > 0
                 }
             }
             const mn = "carousel"
@@ -42322,7 +43004,7 @@ function print() { __p += __j.call(arguments, '') }
                     };
                     if (!Rt.trigger(this._element, dm, g).defaultPrevented) {
                         if (this._createPopper(),
-                        "ontouchstart" in document.documentElement && !this._parent.closest(Bu))
+                        "ontouchstart"in document.documentElement && !this._parent.closest(Bu))
                             for (const Bt of [].concat(...document.body.children))
                                 Rt.on(Bt, "mouseover", it);
                         this._element.focus(),
@@ -42350,7 +43032,7 @@ function print() { __p += __j.call(arguments, '') }
                 }
                 _completeHide(g) {
                     if (!Rt.trigger(this._element, yr, g).defaultPrevented) {
-                        if ("ontouchstart" in document.documentElement)
+                        if ("ontouchstart"in document.documentElement)
                             for (const Bt of [].concat(...document.body.children))
                                 Rt.off(Bt, "mouseover", it);
                         this._popper && this._popper.destroy(),
@@ -43389,7 +44071,7 @@ function print() { __p += __j.call(arguments, '') }
                     Rt.trigger(this._element, this.constructor.eventName(jm))),
                     this._popper = this._createPopper(_n),
                     _n.classList.add(Zo),
-                    "ontouchstart" in document.documentElement)
+                    "ontouchstart"in document.documentElement)
                         for (const rr of [].concat(...document.body.children))
                             Rt.on(rr, "mouseover", it);
                     const Cn = () => {
@@ -43404,7 +44086,7 @@ function print() { __p += __j.call(arguments, '') }
                     if (!this._isShown() || Rt.trigger(this._element, this.constructor.eventName(Im)).defaultPrevented)
                         return;
                     if (this._getTipElement().classList.remove(Zo),
-                    "ontouchstart" in document.documentElement)
+                    "ontouchstart"in document.documentElement)
                         for (const _n of [].concat(...document.body.children))
                             Rt.off(_n, "mouseover", it);
                     this._activeTrigger[lp] = !1,
@@ -44183,8 +44865,10 @@ function print() { __p += __j.call(arguments, '') }
     const root = document.getElementById("root");
     if (!root)
         throw new Error("Root element not found");
+    const routerBasename = window.location.pathname.replace(/\/index\.html$/, "").replace(/\/$/, "") || "/";
     client.createRoot(root).render(jsxRuntimeExports.jsx(React$1.StrictMode, {
         children: jsxRuntimeExports.jsx(BrowserRouter, {
+            basename: routerBasename,
             future: {
                 v7_startTransition: !0,
                 v7_relativeSplatPath: !0
@@ -44194,5 +44878,4 @@ function print() { __p += __j.call(arguments, '') }
     }))
 }
 );
-export default UA();
-//# sourceMappingURL=index-EjZsGQQr.js.map
+UA();
