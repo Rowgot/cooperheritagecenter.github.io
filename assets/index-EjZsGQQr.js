@@ -31,7 +31,7 @@ var lu = (e, t, n, i) => ({
         return w(e, t, i)
     }
 });
-import {r as reactExports, g as getDefaultExportFromCjs, R as React, j as jsxRuntimeExports, a as React$1, c as commonjsGlobal, b as assignment1, d as getAugmentedNamespace} from "./quiz-questions-CUbXBx_m.js";
+import {r as reactExports, g as getDefaultExportFromCjs, R as React, j as jsxRuntimeExports, a as React$1, c as commonjsGlobal, b as assignment1, d as getAugmentedNamespace} from "quiz-questions-CUbXBx_m.js";
 var UA = BA( (exports, module) => {
     function _mergeNamespaces(e, t) {
         for (var n = 0; n < t.length; n++) {
@@ -14642,7 +14642,7 @@ Arguments: ` + Array.prototype.slice.call(i).join("") + `
             try {
                 t = globalLocale._abbr,
                 n = require,
-                n("./locale/" + e),
+                n("locale/" + e),
                 getSetGlobalLocale(t)
             } catch {
                 locales[e] = null
@@ -25037,7 +25037,7 @@ function print() { __p += __j.call(arguments, '') }
                 {
                     if (_util.isNodeJS && typeof commonjsRequire == "function")
                         PDFWorkerUtil.isWorkerDisabled = !0,
-                        PDFWorkerUtil.fallbackWorkerSrc = "./pdf.worker.js";
+                        PDFWorkerUtil.fallbackWorkerSrc = "pdf.worker.js";
                     else if (typeof document == "object") {
                         const q = (y = document == null ? void 0 : document.currentScript) == null ? void 0 : y.src;
                         q && (PDFWorkerUtil.fallbackWorkerSrc = q.replace(/(\.(?:min\.)?js)(\?.*)?$/i, ".worker$1$2"))
