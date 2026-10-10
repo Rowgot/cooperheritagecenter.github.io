@@ -23312,7 +23312,7 @@ function print() { __p += __j.call(arguments, '') }
                     try {
                         const _e = await __variableDynamicImportRuntimeHelper(Object.assign({
                             "../components/Quiz/questions/assignment0.tsx": () => __vitePreload( () => Promise.resolve().then( () => assignment0), void 0),
-                            "../components/Quiz/questions/assignment1.tsx": () => __vitePreload( () => import("./quiz-questions-CUbXBx_m.js").then(rt => rt.b), []),
+                            "../components/Quiz/questions/assignment1.tsx": () => __vitePreload( () => import("quiz-questions-CUbXBx_m.js").then(rt => rt.b), []),
                             "../components/Quiz/questions/assignment2.tsx": () => __vitePreload( () => Promise.resolve().then( () => assignment2), void 0),
                             "../components/Quiz/questions/assignment3.tsx": () => __vitePreload( () => Promise.resolve().then( () => assignment3), void 0),
                             "../components/Quiz/questions/assignment4.tsx": () => __vitePreload( () => Promise.resolve().then( () => assignment4), void 0),
